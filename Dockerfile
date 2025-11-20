@@ -2,7 +2,7 @@ FROM tomcat:8.0-alpine
 
 RUN rm -r /usr/local/tomcat/webapps/ROOT
 
-ADD ROOT.war /usr/local/tomcat/webapps/
+COPY target/ROOT.war /usr/local/tomcat/webapps/ROOT.war
 
-EXPOSE 8080
+EXPOSE 8081
 CMD ["catalina.sh", "run"]
