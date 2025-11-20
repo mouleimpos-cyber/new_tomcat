@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven.97'
+        maven 'maven_2025'
     }
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('docker_pvt')
+        DOCKERHUB_CREDENTIALS = credentials('docker_pre')
 
         DOCKER_HUB_REPO = 'chandramoule97/myasus'
     }
@@ -15,7 +15,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', credentialsId: 'github_pvt', url: 'https://github.com/mouleimpos-cyber/new_tomcat.git'
+                git branch: 'main', credentialsId: 'github_pre', url: 'https://github.com/mouleimpos-cyber/new_tomcat.git'
             }
         }
 
