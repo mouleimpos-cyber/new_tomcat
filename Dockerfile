@@ -6,6 +6,6 @@ RUN rm -rf /usr/local/tomcat/webapps/ROOT
 COPY target/ROOT.war /usr/local/tomcat/webapps/ROOT.war
 
 # Tomcat inside image listens on 8080
-EXPOSE 8080
+EXPOSE 8081
 
 CMD ["catalina.sh", "run"]
