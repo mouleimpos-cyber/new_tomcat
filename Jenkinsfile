@@ -6,12 +6,9 @@ pipeline {
     }
 
     environment {
-		DOCKERHUB_CREDENTIALS = credentials('docker_cred')
-	
+        DOCKERHUB_CREDENTIALS = credentials('docker_cred')
+
         DOCKER_HUB_REPO = 'chandramoule97/myasus'
-        IMAGE_TAG = "v12.2"
-        IMAGE_LOCAL = "myasus:${IMAGE_TAG}"
-        IMAGE_REMOTE = "${DOCKER_HUB_REPO}:${IMAGE_TAG}"
     }
 
     stages {
@@ -28,33 +25,27 @@ pipeline {
             }
         }
 
-        stage('Check Docker') {
-            steps {
-                sh '''
-                  if ! command -v docker >/dev/null 2>&1; then
-                    echo "Docker not found on this node. Ensure agent has Docker installed."
-                    exit 1
-                  fi
-                  docker --version || true
-                '''
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${IMAGE_LOCAL} ."
+                sh 'docker build -t myasus:v12.2 .'
             }
         }
 
-        stage('Login, Tag & Push') {
+        stage('Login to Docker Hub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker_pre', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh '''
-                      echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                      docker tag ${IMAGE_LOCAL} ${IMAGE_REMOTE}
-                      docker push ${IMAGE_REMOTE}
-                    '''
-                }
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+
+        stage('Tag Docker Image') {
+            steps {
+                sh 'docker tag myasus:v12.2 chandramoule97/myasus:v12.2'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                sh 'docker push chandramoule97/myasus:v12.2'
             }
         }
 
@@ -63,7 +54,7 @@ pipeline {
                 sh '''
                     docker stop myasus || true
                     docker rm myasus || true
-                    docker run -d --name myasus -p 8081:8080 ${IMAGE_REMOTE}
+                    docker run -d --name myasus -p 8081:80 chandramoule97/myasus:v12.2
                 '''
             }
         }
@@ -73,9 +64,5 @@ pipeline {
         always {
             sh 'docker logout || true'
         }
-        failure {
-            echo 'Pipeline failed — check the console output for the failing stage and error messages.'
-        }
     }
 }
- 
