@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven_2025'
+        maven 'maven.1.2.3'
     }
 
     environment {
-		DOCKERHUB_CREDENTIALS = credentials('docker_pre')
+		DOCKERHUB_CREDENTIALS = credentials('docker_cred')
 	
         DOCKER_HUB_REPO = 'chandramoule97/myasus'
         IMAGE_TAG = "v12.2"
