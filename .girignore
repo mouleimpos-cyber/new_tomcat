@@ -1,0 +1,40 @@
+# Maven build output
+/target/
+
+# IDE files
+/.idea/
+/.settings/
+.classpath
+.project
+*.iml
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Maven wrapper (optional)
+.mvn/
+
+# Build artifacts
+*.jar
+*.war
+*.ear
+
+# Coverage and temp files
+jacoco.exec
+*.tmp
+
+# Docker
+docker-compose.override.yml
+.env
+
+# Secrets (never commit keys)
+*.key
+*.pem
+
